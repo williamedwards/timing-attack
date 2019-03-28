@@ -9,10 +9,12 @@
 
 #include "secret.h"
 
-constexpr int iters = 1000;
+constexpr int iters = 10000000;
+constexpr int inner_iters = 100;
 constexpr int warm_up = 500;
 constexpr double zcrit = 2.58;
 constexpr double trim_percentage = 0.1;
+
 namespace chrono = std::chrono;
 
 void trim(std::vector<int> & vals) {
@@ -47,8 +49,8 @@ std::pair<double, double> ci(const std::vector<int> & vals) {
 }
 
 int main() {
-    std::string pass_a = "edvishwordforfriend";
-    std::string pass_b = "edvishwordforfriend";
+    std::string pass_a = "el-----------------";
+    std::string pass_b = "-------------------";
     std::vector<int> times_a;
     std::vector<int> times_b;
 
@@ -66,7 +68,8 @@ int main() {
             pass = pass_b;
             
         auto start = chrono::steady_clock::now();
-        check_password(pass);
+        // for (int i = 0; i < inner_iters; i++)
+            check_password(pass);
         auto end = chrono::steady_clock::now();
         auto duration = chrono::duration_cast<chrono::nanoseconds>(end - start);
         if (choice == 1)
@@ -77,9 +80,9 @@ int main() {
     // // Skip warm-up
     // times_a.erase(times_a.begin(), times_a.begin() + warm_up);
     // times_b.erase(times_b.begin(), times_b.begin() + warm_up);
-    // Trim the data
-    trim(times_a);
-    trim(times_b);
+    // // Trim the data
+    // trim(times_a);
+    // trim(times_b);
 
     // Compute and print statistics
     std::cout << "Mean A: " << mean(times_a) << std::endl;
