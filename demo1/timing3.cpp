@@ -58,12 +58,9 @@ std::string get_pair_from_num(int num) {
     return ss.str();
 }
 
-std::string crack_pair(std::string prefix) {
-    std::string suffix;
-    for (int i = 0; i < password_length - prefix.size() - 2; i++) {
-        suffix += "-";
-    }
-    std::cout << "suffix: " << suffix << std::endl;
+int main() {
+    std::string pass_a = "el-----------------";
+    std::string pass_b = "-------------------";
 
     // Initialize random stuff
     std::random_device rd;
@@ -76,8 +73,8 @@ std::string crack_pair(std::string prefix) {
 
     for (int i = 0; i < iters; i++) {
         int choice = dist(random);
-        std::string pass = prefix + get_pair_from_num(choice) + suffix;
-        std::cout << pass << std::endl;
+        std::string pass = get_pair_from_num(choice);
+        pass += "-----------------";
             
         auto start = chrono::steady_clock::now();
         check_password(pass);
@@ -97,16 +94,5 @@ std::string crack_pair(std::string prefix) {
         }
         current_num++;
     }
-    std::string max_pair = get_pair_from_num(max_num);
-    std::cout << "Max pair is: " << max_pair << std::endl;
-    
-    return max_pair;
-}
-
-int main() {
-    std::string prefix = "";
-    for (int i = 0; i < password_length; i += 2) {
-        prefix += crack_pair(prefix); 
-    }
-    std::cout << "Final password: " << prefix << std::endl;
+    std::cout << "Max pair is: " << get_pair_from_num(max_num) << std::endl;
 }
