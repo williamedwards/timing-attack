@@ -2,16 +2,16 @@
 #include <chrono>
 #include <thread>
 
-constexpr char secret_password[] = "elvishwordforfriend";
+#include "secret.h"
+
 
 int main(int argc, char ** argv) {
     std::string password_input;
 
     while (std::getline(std::cin, password_input)) {
-        if (password_input == secret_password)
+        if (check_password(password_input))
             std::cout << "Access Granted" << std::endl;
         else
             std::cout << "Access Denied" << std::endl;
-        std::this_thread::sleep_for(std::chrono::milliseconds(100));
     }
 }
