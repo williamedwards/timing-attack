@@ -6,7 +6,7 @@
 
 #include "secret.h"
 
-constexpr int iters = 10;
+constexpr int iters = 1000;
 namespace chrono = std::chrono;
 
 double mean(const std::vector<int> & vals) {
