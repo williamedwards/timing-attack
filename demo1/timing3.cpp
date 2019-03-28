@@ -60,9 +60,10 @@ std::string get_pair_from_num(int num) {
 
 std::string crack_pair(std::string prefix) {
     std::string suffix;
-    for (int i = 0; i < password_length - prefix.size() - 2; i ++) {
+    for (int i = 0; i < password_length - prefix.size() - 2; i++) {
         suffix += "-";
     }
+    std::cout << "suffix: " << suffix << std::endl;
 
     // Initialize random stuff
     std::random_device rd;
@@ -76,6 +77,7 @@ std::string crack_pair(std::string prefix) {
     for (int i = 0; i < iters; i++) {
         int choice = dist(random);
         std::string pass = prefix + get_pair_from_num(choice) + suffix;
+        std::cout << pass << std::endl;
             
         auto start = chrono::steady_clock::now();
         check_password(pass);
