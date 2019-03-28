@@ -4,6 +4,7 @@
 #include <vector>
 #include <cmath>
 #include <algorithm>
+#include <random>
 
 
 #include "secret.h"
@@ -50,20 +51,28 @@ int main() {
     std::string pass_b = "edvishwordforfriend";
     std::vector<int> times_a;
     std::vector<int> times_b;
+
+    // Initialize random stuff
+    std::random_device rd;
+    std::default_random_engine random(rd());
+    std::uniform_int_distribution<int> dist(1,2);
+
     for (int i = 0; i < iters; i++) {
+        int choice = dist(random);
+        std::string pass;
+        if (choice == 1)
+            pass = pass_a;
+        else
+            pass = pass_b;
+            
         auto start = chrono::steady_clock::now();
-        check_password(pass_a);
+        check_password(pass);
         auto end = chrono::steady_clock::now();
         auto duration = chrono::duration_cast<chrono::nanoseconds>(end - start);
-        times_a.push_back(duration.count());
-        std::cout << "A: " << duration.count() << std::endl;
-
-        auto start_b = chrono::steady_clock::now();
-        check_password(pass_b);
-        auto end_b = chrono::steady_clock::now();
-        auto duration_b = chrono::duration_cast<chrono::nanoseconds>(end_b - start_b);
-        times_b.push_back(duration_b.count());
-        std::cout << "B: " << duration_b.count() << std::endl;
+        if (choice == 1)
+            times_a.push_back(duration.count());
+        else
+            times_b.push_back(duration.count());
     }
     // // Skip warm-up
     // times_a.erase(times_a.begin(), times_a.begin() + warm_up);
