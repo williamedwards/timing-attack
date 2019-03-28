@@ -11,21 +11,11 @@
 #include "secret.h"
 
 constexpr int iters = 10000000;
-constexpr int inner_iters = 100;
-constexpr int warm_up = 500;
 constexpr double zcrit = 2.58;
-constexpr double trim_percentage = 0.1;
 constexpr int num_bound = 676;
 constexpr int password_length = 19;
 
 namespace chrono = std::chrono;
-
-void trim(std::vector<int> & vals) {
-    std::sort(vals.begin(), vals.end());
-    int num_drop = vals.size() * trim_percentage;
-    vals.erase(vals.begin(), vals.begin() + num_drop);
-    vals.erase(vals.end() - num_drop, vals.end());
-}
 
 double mean(const std::vector<int> & vals) {
     double sum = 0.0;
@@ -63,7 +53,7 @@ std::string crack_pair(std::string prefix) {
     for (int i = 0; i < password_length - prefix.size() - 2; i++) {
         suffix += "-";
     }
-    std::cout << "suffix: " << suffix << std::endl;
+    // std::cout << "suffix: " << suffix << std::endl;
 
     // Initialize random stuff
     std::random_device rd;
@@ -103,10 +93,29 @@ std::string crack_pair(std::string prefix) {
     return max_pair;
 }
 
+bool final_char(std::string prefix) {
+    for (int i = 0; i < 26; i++) {
+        std::string pass = prefix + (char) ('a' + i);
+        if (check_password(pass)) {
+            std::cout << "Password Cracked: " << pass << std::endl;
+            return true;
+        }
+    }
+    return false;
+}
+
 int main() {
     std::string prefix = "";
     for (int i = 0; i < password_length; i += 2) {
+        if (i == password_length - 1) {
+            if (final_char(prefix)) {
+                std::cout << "Done" << std::endl;
+                break;
+            }
+            else {
+                std::cout << "Failed" << std::endl;
+            }
+        }
         prefix += crack_pair(prefix); 
     }
-    std::cout << "Final password: " << prefix << std::endl;
 }
