@@ -11,18 +11,10 @@
 
 constexpr int iters = 10000000;
 constexpr int inner_iters = 100;
-constexpr int warm_up = 500;
 constexpr double zcrit = 2.58;
-constexpr double trim_percentage = 0.1;
 
 namespace chrono = std::chrono;
 
-void trim(std::vector<int> & vals) {
-    std::sort(vals.begin(), vals.end());
-    int num_drop = vals.size() * trim_percentage;
-    vals.erase(vals.begin(), vals.begin() + num_drop);
-    vals.erase(vals.end() - num_drop, vals.end());
-}
 
 double mean(const std::vector<int> & vals) {
     double sum = 0.0;
@@ -49,8 +41,8 @@ std::pair<double, double> ci(const std::vector<int> & vals) {
 }
 
 int main() {
-    std::string pass_a = "el-----------------";
-    std::string pass_b = "-------------------";
+    std::string pass_a = "elvishwordforfrienb";
+    std::string pass_b = "alvishwordforfriend";
     std::vector<int> times_a;
     std::vector<int> times_b;
 
@@ -77,12 +69,6 @@ int main() {
         else
             times_b.push_back(duration.count());
     }
-    // // Skip warm-up
-    // times_a.erase(times_a.begin(), times_a.begin() + warm_up);
-    // times_b.erase(times_b.begin(), times_b.begin() + warm_up);
-    // // Trim the data
-    // trim(times_a);
-    // trim(times_b);
 
     // Compute and print statistics
     std::cout << "Mean A: " << mean(times_a) << std::endl;

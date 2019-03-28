@@ -24,23 +24,6 @@ double mean(const std::vector<int> & vals) {
     return sum / vals.size();
 }
 
-double stdev(const std::vector<int> & vals) {
-    double sample_mean = mean(vals);
-    double sum_squared_diff = 0.0;
-    for (int val : vals)
-        sum_squared_diff += (val - sample_mean) * (val - sample_mean);
-    return sqrt(sum_squared_diff / (vals.size() - 1));
-}
-
-std::pair<double, double> ci(const std::vector<int> & vals) {
-    double sample_mean = mean(vals);
-    double sample_stdev = stdev(vals);
-    double standard_error = sample_stdev / sqrt(vals.size());
-    double lower_bound = sample_mean - zcrit * standard_error;
-    double upper_bound = sample_mean + zcrit * standard_error;
-    return std::make_pair(lower_bound, upper_bound);
-}
-
 std::string get_pair_from_num(int num) {
     std::stringstream ss;
     ss << (char) ('a' + (num / 26));
